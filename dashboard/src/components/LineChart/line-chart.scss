@@ -1,0 +1,22 @@
+.line-chart-container {
+  display: flex;
+  height: 250px;
+  width: 250px;
+  justify-self: center;
+  align-self: center;
+  align-items: center;
+}
+
+@media screen and (min-width: 400px) {
+  .line-chart-container {
+    height: 330px;
+    width: 330px;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .line-chart-container {
+    height: 500px;
+    width: 500px;
+  }
+}
