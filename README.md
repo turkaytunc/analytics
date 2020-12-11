@@ -14,6 +14,18 @@ PerfAnalytics is an ecosystem which collects and criticizes web performance data
 
 ### :pencil: How to use library
 
+### npm
+
+```sh
+npm i window-perf-analytics
+```
+
+### yarn
+
+```sh
+yarn add window-perf-analytics
+```
+
 ```js
 import { gatherAnalytics } from "window-perf-analytics";
 
