@@ -18,11 +18,9 @@ PerfAnalytics is an ecosystem which collects and criticizes web performance data
 
 ```sh
 npm i window-perf-analytics
-```
 
-### yarn
+or
 
-```sh
 yarn add window-perf-analytics
 ```
 
@@ -33,6 +31,8 @@ const url = "http://localhost:4000/analytics"; // default post url for sending m
 gatherAnalytics(url);
 ```
 
+---
+
 ## Analytics API
 
 - For gathering data:
@@ -42,10 +42,12 @@ gatherAnalytics(url);
 - For emitting analytics used websockets instead of get request.
 - Websocket better fits for analytics broadcast api.
 
-## Easy to use with docker
+- Easy to use with docker
 
 ```sh
-docker-compose up
+cd api/
+
+docker-compose up --build
 ```
 
 ---
@@ -59,6 +61,8 @@ docker-compose up
 ```sh
 npm install -g loadtest
 
+loadtest -c 10 --rps 200 http://localhost:4000/
+
 ```
 
 ![loadtest](https://github.com/turkaytunc/analytics/blob/main/static-files/loadtest.png)
@@ -71,7 +75,34 @@ npm install -g loadtest
 
 ![graph-2](https://github.com/turkaytunc/analytics/blob/main/static-files/graph-2.png)
 
+![file](https://github.com/turkaytunc/analytics/blob/main/static-files/fileRenderer.png)
+
 ## Overall Setup
+
+1. Start api
+
+```sh
+sh start-api.sh
+
+or
+
+cd api
+docker-compose up --build
+```
+
+2. Start dashboard
+
+```sh
+cd dashboard/
+npm start
+```
+
+3. Start test
+
+```sh
+cd test-playground/
+npm start
+```
 
 ## References
 

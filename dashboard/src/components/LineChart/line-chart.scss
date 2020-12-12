@@ -20,3 +20,17 @@
     width: 500px;
   }
 }
+
+@media screen and (min-width: 950px) {
+  .line-chart-container {
+    height: 800px;
+    width: 800px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .line-chart-container {
+    height: 700px;
+    width: 700px;
+  }
+}

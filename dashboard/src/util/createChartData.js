@@ -18,7 +18,6 @@ const createChartData = (items = []) => {
     data.DOMLoadTime.push(item.DOMLoadTime);
     data.windowLoadTime.push(item.windowLoadTime);
   }
-
   return data;
 };
 

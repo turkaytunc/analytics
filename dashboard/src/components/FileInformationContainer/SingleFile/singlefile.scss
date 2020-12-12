@@ -1,0 +1,15 @@
+.singlefile-container {
+  list-style: none;
+  background-color: rebeccapurple;
+  border: 1px solid #ccc;
+  margin: 0.5em 1em;
+  width: 100%;
+  padding-left: 0.5em;
+  box-shadow: 1px 1px 5px black;
+
+  li {
+    width: 100%;
+    overflow-x: auto;
+    color: #ccc;
+  }
+}

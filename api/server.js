@@ -90,7 +90,7 @@ const getApiAndEmit = (socket) => {
 //#endregion
 
 app.get("/", (req, res) => {
-  res.send("Api is running!");
+  res.send("Api is running!!");
 });
 
 //#region analytic routes
