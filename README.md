@@ -42,6 +42,27 @@ gatherAnalytics(url);
 - For emitting analytics used websockets instead of get request.
 - Websocket better fits for analytics broadcast api.
 
+## Easy to use with docker
+
+```sh
+docker-compose up
+```
+
+---
+
+## :zap: request per second test via loadtest library
+
+- loadtest allows you to set a rate or requests per second with the --rps option.
+- Example: loadtest -c 10 --rps 200 <http://mysite.com/>
+- This command sends exactly 200 requests per second with concurrency 10, so you can see how your server copes with sustained rps.
+
+```sh
+npm install -g loadtest
+
+```
+
+![loadtest](https://github.com/turkaytunc/analytics/blob/main/static-files/loadtest.png)
+
 ---
 
 ### :chart_with_upwards_trend: Dashboard graphs

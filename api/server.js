@@ -1,15 +1,17 @@
-import express from "express";
-import http from "http";
-import cors from "cors";
-import dotenv from "dotenv";
-import connectDB from "./config/database.js";
-import chalk from "chalk";
-import bodyParser from "body-parser";
-//import io from "socket.io-client";
-import * as socketIO from "socket.io";
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const chalk = require("chalk");
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const socketIO = require("socket.io");
 
-import Analytic from "./models/analytic.js"; // For es module it has to end with file extension
+const connectDB = require("./config/database");
+const Analytic = require("./models/analytic"); // For es module it has to end with file extension
+const formatData = require("./util/formatData");
+const analyticRoutes = require("./routes/analyticRoutes");
 
+//#region Initial server configurations
 dotenv.config();
 const app = express();
 const server = http.createServer(app);
@@ -20,14 +22,19 @@ const io = new socketIO.Server(server, {
   },
 });
 
+//#endregion
+
 const { PORT = 4000 } = process.env;
 
-// Middlewares
+//#region Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
+//#endregion Middleware
+
+//#region Websocket Connection
 let interval;
 
 io.on("connection", (socket) => {
@@ -51,63 +58,46 @@ const getApiAndEmit = (socket) => {
   Analytic.find({
     updatedAt: { $gte: dt },
   }).then((items) => {
-    const data = items.map((item) => {
-      return {
-        fcp: item.fcp,
-        ttfb: item.ttfb,
-        DOMLoadTime: item.DOMLoadTime,
-        windowLoadTime: item.windowLoadTime,
-        createdAt: item.createdAt,
-        files: item.files.map((file) => {
-          return {
-            fileName: file.fileName,
-            fileType: file.fileType,
-            fileLoadTime: file.fileLoadTime,
-          };
-        }),
-      };
-    });
+    const data = formatData(items);
+
     socket.emit("metrics", data);
   });
 };
+
+//#endregion
+
+//#region unused rest endpoint GET /dashboard
+
+// app.get("/dashboard", async (req, res) => {
+//   let min = req.query.min;
+//   const dt = new Date();
+//   try {
+//     if (min < 0 || min > 60 || min == null || min == undefined) {
+//       min = 5;
+//     }
+//     dt.setMinutes(dt.getMinutes() - min);
+
+//     Analytic.find({
+//       updatedAt: { $gte: dt },
+//     }).then((items) => {
+//       res.json(items);
+//     });
+//   } catch (error) {
+//     console.error(chalk.red(error));
+//   }
+// });
+
+//#endregion
 
 app.get("/", (req, res) => {
   res.send("Api is running!");
 });
 
-app.get("/dashboard", async (req, res) => {
-  let min = req.query.min;
-  const dt = new Date();
-  try {
-    if (min < 0 || min > 60 || min == null || min == undefined) {
-      min = 5;
-    }
-    dt.setMinutes(dt.getMinutes() - min);
+//#region analytic routes
 
-    Analytic.find({
-      updatedAt: { $gte: dt },
-    }).then((items) => {
-      res.json(items);
-    });
-  } catch (error) {
-    console.error(chalk.red(error));
-  }
-});
+app.use("/analytics", analyticRoutes);
 
-app.post("/analytics", async (req, res, next) => {
-  try {
-    const data = JSON.parse(req.body);
-    const analytic = new Analytic(data);
-
-    analytic.save().then((analytic) => {
-      console.log(chalk.green("Data saved"));
-      res.json("data saved");
-      next();
-    });
-  } catch (error) {
-    console.error(error);
-  }
-});
+//#endregion
 
 connectDB().then(
   server.listen(PORT, () => {

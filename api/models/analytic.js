@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const analyticSchema = new mongoose.Schema(
   {
@@ -48,4 +48,4 @@ const analyticSchema = new mongoose.Schema(
 
 const Analytic = mongoose.model("Analytic", analyticSchema);
 
-export default Analytic;
+module.exports = Analytic;
