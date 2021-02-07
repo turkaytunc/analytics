@@ -1,4 +1,4 @@
-export function gatherAnalytics(postUrl = "http://localhost:4000/analytics") {
+export function gatherAnalytics(postUrl = 'http://localhost:4000/analytics') {
   window.analytics = {
     currentUrl: window.location.href,
     fcp: 0,
@@ -10,14 +10,14 @@ export function gatherAnalytics(postUrl = "http://localhost:4000/analytics") {
   };
 
   const getFirstContenfulPaintTime = () => {
-    const paint = window.performance.getEntriesByType("paint");
+    const paint = window.performance.getEntriesByType('paint');
     if (paint[1]?.startTime !== undefined) {
       window.analytics.fcp = paint[1]?.startTime;
     }
   };
 
   const getFilesLoadTimes = () => {
-    const files = window.performance.getEntriesByType("resource");
+    const files = window.performance.getEntriesByType('resource');
     window.analytics.files = [];
 
     for (var file of files) {
@@ -30,12 +30,7 @@ export function gatherAnalytics(postUrl = "http://localhost:4000/analytics") {
   };
 
   const calculatePerformanceTiming = () => {
-    const {
-      responseStart,
-      requestStart,
-      navigationStart,
-      domContentLoadedEventEnd,
-    } = window.performance.timing;
+    const { responseStart, requestStart, navigationStart, domContentLoadedEventEnd } = window.performance.timing;
 
     const metrics = window.analytics;
 
@@ -51,7 +46,7 @@ export function gatherAnalytics(postUrl = "http://localhost:4000/analytics") {
     calculatePerformanceTiming();
   };
 
-  window.addEventListener("visibilitychange", () => {
+  window.addEventListener('visibilitychange', () => {
     navigator.sendBeacon(`${postUrl}`, JSON.stringify(window.analytics));
   });
 }
